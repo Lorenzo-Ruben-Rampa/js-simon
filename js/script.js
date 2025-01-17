@@ -7,7 +7,7 @@
 
 // elementi input
 const form = document.getElementById('answers-form');
-const inputNumber = document.getElementById('#input-group input');
+const inputNumber = document.querySelectorAll('#input-group input');
 const button = document.getElementById('button');
 const countDown = document.getElementById('countdown');
 const instructions = document.getElementById('instructions');
@@ -22,7 +22,7 @@ let items = "";
 
 // Ciclo per inserire i numeri casuali
 for (let i=0; i < 5; i++) {
-    items += `<li>${number[i]}<li>`;
+    items += `<li>${number[i]}</li>`;
 }
 
 // Aggiungi gli items in output
@@ -42,7 +42,7 @@ const ContoallaRovescia = setInterval(() => {
 // Elimino il numero una volta arrivato a zero col countdown
     countDown.innerHTML = "";
 // Nascondo la lista dei numeri
-    listNumber.classList.remove('d-none');
+    listNumber.classList.add('d-none');
     } else {
     // diminuisco il conto di 1
         seconds = seconds - 1;
@@ -69,8 +69,8 @@ for (let i = 0; i < inputNumber.length; i++) {
     if (numeriscelti.includes(numberValue)) {
 
 // modifica il valore del duplicato in vero
-duplicate = true;
-break
+duplicato = true;
+break;
     }
     numeriscelti.push(numberValue)
 }
@@ -79,36 +79,29 @@ break
 messaggio.innerHTML = "Non puoi inserire lo stesso numero due volte";
 messaggio.classList.remove('text-success');
 messaggio.classList.add('text-danger');
+// Evidenzia gli input duplicati
+    for (let i = 0; i < inputNumber.length; i++) {
+        if (numeriscelti.includes(parseInt(inputNumber[i].value.trim()))) {
+            inputNumber[i].classList.add('is-invalid');  // Aggiungi la classe is-invalid
+        }
+    }
     } else {
 
 // Convalido i dati con validateNumbers
-        const numeriIndovinati = validateNumbers(numeriscelti, number);
+const numeriIndovinati = validateNumbers(numeriscelti, number);
 
 // Messaggio in caso di numeri indovinati
-        const numeriIndovinatimex = `HAI INDOVINATO ${numeriIndovinatI}`;
-    }
+const numeriIndovinatimex = `HAI INDOVINATO ${numeriIndovinati.length} numeri: ${numeriIndovinati.join(", ")}`;
+}
 // Messaggio testo diventa rosso in caso di errore
     messaggio.classList.add('text-success');
     messaggio.classList.remove('text-danger');
 
 // Se gli array sono entrambi vuoti vuol dire che sono stati indovinati tutti i numeri
-if (numeriIndovinatI.length === 5) {
-    messaggio.innerHTML = `${numeriIndovinatimex}`;
-} else if {
-    (numeriIndovinatI.length === 4) {
-        messaggio.innerHTML = `${numeriIndovinatimex}`;
-    } else if {
-        (numeriIndovinatI.length === 3) {
-            messaggio.innerHTML = `${numeriIndovinatimex}`;
-    }
-} else if {
-    (numeriIndovinatI.length === 2) {
-        messaggio.innerHTML = `${numeriIndovinatimex}`;
-}
-} else if {
-    (numeriIndovinatI.length === 1) {
-        messaggio.innerHTML = `${numeriIndovinatimex}`;
-}
+if (numeriIndovinati.length > 0) {
+    messaggio.innerHTML = numeriIndovinatimex;
+    messaggio.classList.remove('text-danger');
+    messaggio.classList.add('text-success');
 } else {
     messaggio.innerHTML = "NON HAI INDOVINATO NESSUN NUMERO"
     messaggio.classList.remove('text-success');
@@ -117,7 +110,6 @@ if (numeriIndovinatI.length === 5) {
     button.disabled = true;
 // resetta il form
     form.reset();
-}
 });
 
 // funzione per numeri casuali in un range
@@ -128,18 +120,16 @@ function randomNumberRange(min, max) {
 // funzione per numeri casuali non ripetuti
 function generateRandomNumbers(totalNumbers, min, max) {
     const randomNumbers = [];
-}
 
-// ciclo per generare dei numeri casuali unici
-for (let i = 0; randomNumber.length < totalNumbers; i++) {
-    const numeriesimo = randomNumberRange(min, max);
+    while (randomNumbers.length < totalNumbers) {
+        const numeriesimo = randomNumberRange(min, max);
 
-// verifico che il numero non è già presente nell'array
-if (!randomNumbers.includes(numeriesimo)) {
-// se non è presente lo aggiungo nell'array
-randomNumbers.push(numeriesimo);
-}
-return randomNumbers;
+        if (!randomNumbers.includes(numeriesimo)) {
+            randomNumbers.push(numeriesimo);
+        }
+    }
+
+    return randomNumbers;
 }
 
 // Funzione per validare l'array utente rispetto a quello generato
@@ -153,7 +143,7 @@ for (let i = 0; i < arraycheck.length; i++) {
     const item = arraycheck[i];
 
 // se l'array include elementi iesimi che non sono già stati inseriti nell'array
-    if (arrayverify.includes(item) && !result.includes(item)){
+    if (arrayverify.includes(item) {
 
 // salvo quegli elementi nell'array
     result.push(item);
